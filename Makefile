@@ -1,19 +1,14 @@
 CC = gcc
-CFLAGS = -Wall -g
-LIBS = -ljson-c -lpthread
+CFLAGS = -Wall -g -D_GNU_SOURCE
+LIBS = -lsqlite3
 
-SERVER_SRC = server.c
-CLIENT_SRC = client.c
-SERVER_BIN = server
-CLIENT_BIN = client
+all: server client
 
-all: $(SERVER_BIN) $(CLIENT_BIN)
+server: server.c
+	$(CC) $(CFLAGS) -o server server.c $(LIBS)
 
-$(SERVER_BIN): $(SERVER_SRC)
-	$(CC) $(CFLAGS) -o $@ $< $(LIBS)
-
-$(CLIENT_BIN): $(CLIENT_SRC)
-	$(CC) $(CFLAGS) -o $@ $<
+client: client.c
+	$(CC) $(CFLAGS) -o client client.c
 
 clean:
-	rm -f $(SERVER_BIN) $(CLIENT_BIN)
+	rm -f server client
