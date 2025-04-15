@@ -76,7 +76,7 @@ void func(int connfd)
             break;
         // Cadastrar novo filme
         if (strncmp("1", buff, 1) == 0)
-        { 
+        {
             char titulo[MAX], genero[MAX], diretor[MAX], ano_str[MAX];
             write(connfd, "Titulo:\n", 8);
             read(connfd, titulo, sizeof(titulo));
@@ -104,7 +104,7 @@ void func(int connfd)
         }
         // Listar todos
         else if (strncmp("4", buff, 1) == 0)
-        { 
+        {
             sqlite3_stmt *stmt;
             const char *sql = "SELECT id, titulo FROM filmes;";
             sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
@@ -124,7 +124,7 @@ void func(int connfd)
         }
         // Lista todas as informações dos filmes
         else if (strncmp("5", buff, 1) == 0)
-        { 
+        {
             sqlite3_stmt *stmt;
             // Query
             const char *sql = "SELECT titulo, genero, diretor, ano FROM filmes;";
@@ -180,7 +180,7 @@ void func(int connfd)
         }
         // Listar filmes por gênero
         else if (strncmp("7", buff, 1) == 0)
-        { 
+        {
             char genero[MAX];
             sqlite3_stmt *stmt;
 
@@ -216,7 +216,7 @@ void func(int connfd)
         }
         // Adicionar novo genero a um filme existente com o ID
         else if (strncmp("8", buff, 1) == 0)
-        { 
+        {
             char id_str[MAX], novo_genero[MAX];
             int id;
             sqlite3_stmt *stmt;
@@ -258,36 +258,40 @@ void func(int connfd)
 
                 const char *msg_ok = "\nGenero adicionado com sucesso.\n";
                 write(connfd, msg_ok, strlen(msg_ok));
-
-            } 
-            else if (strncmp("9", buff, 1) == 0) {  // Remover filme por ID
+            }
+            // Remover filme por ID
+            else if (strncmp("9", buff, 1) == 0)
+            {
                 char id_str[MAX];
                 int id;
                 sqlite3_stmt *stmt;
-            
+
                 write(connfd, "Informe o ID do filme a remover:\n", 34);
                 read(connfd, id_str, sizeof(id_str));
                 id = atoi(id_str);
-            
+
                 const char *check_sql = "SELECT 1 FROM filmes WHERE id = ?;";
                 sqlite3_prepare_v2(db, check_sql, -1, &stmt, NULL);
                 sqlite3_bind_int(stmt, 1, id);
-            
-                if (sqlite3_step(stmt) == SQLITE_ROW) {
+
+                if (sqlite3_step(stmt) == SQLITE_ROW)
+                {
                     sqlite3_finalize(stmt);
                     const char *delete_sql = "DELETE FROM filmes WHERE id = ?;";
                     sqlite3_prepare_v2(db, delete_sql, -1, &stmt, NULL);
                     sqlite3_bind_int(stmt, 1, id);
                     sqlite3_step(stmt);
                     sqlite3_finalize(stmt);
-                    const char *msg_ok = "\nFilme removido com sucesso.\n"; 
+                    const char *msg_ok = "\nFilme removido com sucesso.\n";
                     write(connfd, msg_ok, strlen(msg_ok));
-                } else {
+                }
+                else
+                {
                     sqlite3_finalize(stmt);
                     const char *msg_err = "\nFilme nao encontrado.\n\n";
                     write(connfd, msg_err, strlen(msg_err));
                 }
-            }            
+            }
             else
             {
                 sqlite3_finalize(stmt);
