@@ -1,0 +1,13 @@
+# Executáveis e compilados
+*.o
+server
+client
+
+# Banco de dados
+filmes.db
+
+*~
+*.swp
+.DS_Store
+.vscode/
+.idea/
