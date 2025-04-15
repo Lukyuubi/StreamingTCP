@@ -12,16 +12,15 @@ Este projeto implementa um sistema cliente-servidor para cadastro, modificação
 
 # Compilação
 
-Execute:
+Abra dois terminais e execute na raiz do projeto:
 
 ```bash
 make
 
-Abra dois terminais e execute:
-
 ./server
 
-e 
+# E em seguida, no outro terminal
 
+```bash
 ./client localhost
 
