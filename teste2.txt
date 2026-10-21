@@ -1,1 +1,2 @@
 Outra mensagem informativa diferente do outro ramo
+Outro arquivo de alteracao
